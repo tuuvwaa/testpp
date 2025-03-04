@@ -338,6 +338,26 @@ MainTab:AddButton({
         loadstring(game:HttpGet("https://raw.githubusercontent.com/AnhDzaiScript/ScriptAnhTuanIOS/refs/heads/main/ScriptTuanAnhIOS.lua"))()
     end
 })
+MainTab:AddToggle("TuanAnhIOS_Toggle", {
+    Title = "Bật/Tắt Auto Chest",
+    Description = "Bật để chạy script, tắt để dừng.",
+    Callback = function(value)
+        _G.TuanAnhIOS_Enabled = value
+
+        if value then
+            -- Bật script (chạy trên luồng riêng)
+            ScriptThread = task.spawn(function()
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/AnhDzaiScript/ScriptAnhTuanIOS/refs/heads/main/ScriptTuanAnhIOS.lua"))()
+            end)
+        else
+            -- Dừng script bằng cách hủy luồng
+            if ScriptThread then
+                task.cancel(ScriptThread)
+                ScriptThread = nil
+            end
+        end
+    end
+})
 
 -- Find Fruit
 local fruitsESP = {}
