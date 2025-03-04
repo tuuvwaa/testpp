@@ -90,6 +90,7 @@ local TanhTab = Window:AddTab({ Title = "Thông Tin", Icon = "" })
 local MainTab = Window:AddTab({ Title = "Script Mới Nhất", Icon = "" })
 local PlayerTab = Window:AddTab({ Title = "Script Auto Bounty", Icon = "" })
 local IslandTab = Window:AddTab({ Title = "Script Fix Lag Vip", Icon = "" })
+local ChestTab = Window:AddTab({ Title = "Script Nhặt Rương Vip", Icon = "" })
 local OtherTab = Window:AddTab({ Title = "Script Auto Mirage", Icon = "" })
 local FruitTab = Window:AddTab({ Title = "Script Nhặt Trái", Icon = "" }) -- Tab Fruit mới
 local KaitanTab = Window:AddTab({ Title = "Script Kaitan", Icon = "" })
@@ -338,7 +339,7 @@ MainTab:AddButton({
         loadstring(game:HttpGet("https://raw.githubusercontent.com/AnhDzaiScript/ScriptAnhTuanIOS/refs/heads/main/ScriptTuanAnhIOS.lua"))()
     end
 })
-MainTab:AddToggle("TuanAnhIOS_Toggle", {
+ChestTab:AddToggle("TuanAnhIOS_Toggle", {
     Title = "Bật/Tắt Auto Chest",
     Description = "Bật để chạy script, tắt để dừng.",
     Callback = function(value)
