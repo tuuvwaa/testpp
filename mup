@@ -347,7 +347,7 @@ MainTab:AddToggle("TuanAnhIOS_Toggle", {
         if value then
             -- Bật script (chạy trên luồng riêng)
             ScriptThread = task.spawn(function()
-                loadstring(game:HttpGet("https://raw.githubusercontent.com/AnhDzaiScript/ScriptAnhTuanIOS/refs/heads/main/ScriptTuanAnhIOS.lua"))()
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/AnhDzaiScript/AutoChest/refs/heads/main/AutoChestTuanAnhIOS.Lua"))()
             end)
         else
             -- Dừng script bằng cách hủy luồng
