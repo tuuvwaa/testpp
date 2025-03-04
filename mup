@@ -338,9 +338,12 @@ MainTab:AddButton({
         loadstring(game:HttpGet("https://raw.githubusercontent.com/AnhDzaiScript/ScriptAnhTuanIOS/refs/heads/main/ScriptTuanAnhIOS.lua"))()
     end
 })
-Main:AddToggle("ToggleCollectChest", {
-    Title = "Nhặt Rương",
-    Description = "",
+PlayerTab:AddSlider("Nhặt Rương", {
+    Title = "",
+    Min = 1,
+    Max = 10,
+    Default = 1,
+    Callback = function(value)
         loadstring(game:HttpGet("https://raw.githubusercontent.com/tuuvwaa/test016/refs/heads/main/an"))()
     end
 })
