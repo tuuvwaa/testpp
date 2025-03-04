@@ -342,7 +342,6 @@ Main:AddToggle("ToggleCollectChest", {
     Title = "Nhặt Rương",
     Description = "",
     Default = false
-});
         loadstring(game:HttpGet("https://raw.githubusercontent.com/tuuvwaa/test016/refs/heads/main/an"))()
     end
 })
