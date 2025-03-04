@@ -1,0 +1,502 @@
+-- Tải Fluent UI Library
+local Library = loadstring(game:HttpGetAsync("https://github.com/ActualMasterOogway/Fluent-Renewed/releases/latest/download/Fluent.luau"))()
+-- Âm thanh khởi động
+local startupSound = Instance.new("Sound")
+startupSound.SoundId = "rbxassetid://8594342648"
+startupSound.Volume = 5 -- Điều chỉnh âm lượng nếu cần
+startupSound.Looped = false -- Không lặp lại âm thanh
+startupSound.Parent = game.CoreGui-- Đặt parent vào CoreGui để đảm bảo âm thanh phát
+startupSound:Play() -- Phát âm thanh khi script chạy
+-- Tạo cửa sổ chính
+local Window = Library:CreateWindow{
+    Title = "Tuấn Anh IOS",
+    SubTitle = "discord.gg/MkpDxJVTyb",
+    TabWidth = 160,
+    Size = UDim2.fromOffset(1280, 860),
+    Resize = true,
+    Theme = "Dark",
+    MinimizeKey = Enum.KeyCode.RightControl -- Phím thu nhỏ
+}
+
+-- Tạo ScreenGui chứa nút điều khiển
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "ControlGUI"
+screenGui.Parent = game.CoreGui
+
+-- Tạo nút (ImageButton)
+local toggleButton = Instance.new("ImageButton")
+toggleButton.Size = UDim2.new(0, 50, 0, 50) -- Kích thước nhỏ, hình vuông
+toggleButton.Position = UDim2.new(0, 10, 0, 10) -- Gần góc trái trên
+toggleButton.Image = "rbxassetid://112455697889846" -- Hình ảnh của nút
+toggleButton.BackgroundTransparency = 1 -- Không có nền
+toggleButton.Parent = screenGui
+
+-- Biến lưu trạng thái hiển thị Fluent UI
+local isFluentVisible = true
+
+-- Di chuyển nút
+local dragging, dragInput, dragStart, startPos
+
+local function update(input)
+    local delta = input.Position - dragStart
+    toggleButton.Position = UDim2.new(
+        startPos.X.Scale,
+        startPos.X.Offset + delta.X,
+        startPos.Y.Scale,
+        startPos.Y.Offset + delta.Y
+    )
+end
+
+toggleButton.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.Touch or input.UserInputType == Enum.UserInputType.MouseButton1 then
+        dragging = true
+        dragStart = input.Position
+        startPos = toggleButton.Position
+        input.Changed:Connect(function()
+            if input.UserInputState == Enum.UserInputState.End then
+                dragging = false
+            end
+        end)
+    end
+end)
+
+toggleButton.InputChanged:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.Touch or input.UserInputType == Enum.UserInputType.MouseMovement then
+        dragInput = input
+    end
+end)
+
+game:GetService("UserInputService").InputChanged:Connect(function(input)
+    if dragging and input == dragInput then
+        update(input)
+    end
+end)
+
+-- Ẩn/Hiện Fluent UI khi nhấn nút
+toggleButton.MouseButton1Click:Connect(function()
+    isFluentVisible = not isFluentVisible
+
+    if isFluentVisible then
+        -- Hiện Fluent UI
+        Window:Minimize(false) -- Mở lại cửa sổ
+    else
+        -- Ẩn Fluent UI
+        Window:Minimize(true) -- Thu nhỏ cửa sổ
+    end
+end)
+
+-- Tạo các tab
+local TanhTab = Window:AddTab({ Title = "Thông Tin", Icon = "" })
+local MainTab = Window:AddTab({ Title = "Script Mới Nhất", Icon = "" })
+local PlayerTab = Window:AddTab({ Title = "Script Auto Bounty", Icon = "" })
+local IslandTab = Window:AddTab({ Title = "Script Fix Lag Vip", Icon = "" })
+local OtherTab = Window:AddTab({ Title = "Script Auto Mirage", Icon = "" })
+local FruitTab = Window:AddTab({ Title = "Script Nhặt Trái", Icon = "" }) -- Tab Fruit mới
+local KaitanTab = Window:AddTab({ Title = "Script Kaitan", Icon = "" })
+local PremiumTab = Window:AddTab({ Title = "Script Maru/Banana", Icon = "" })
+
+_G.Random_Auto = false -- Auto Random Fruit
+local selectedPlayer = nil -- Biến lưu player được chọn cho Spectate và Tween Player
+
+TanhTab:AddButton({
+    Title = "discord.gg/MkpDxJVTyb",
+    Description = "Nhấn để copy link Discord",
+    Callback = function()
+        setclipboard("https://discord.gg/MkpDxJVTyb")
+        game:GetService("StarterGui"):SetCore("SendNotification", {
+            Title = "Thông báo",
+            Text = "Đã sao chép link Discord!",
+            Duration = 3
+        })
+    end
+})
+TanhTab:AddButton({
+    Title = "Phở Bò:Tuấn Anh",
+    Description = "Nhấn để copy link FaceBook",
+    Callback = function()
+        setclipboard("https://www.facebook.com/tuanangg10")
+        game:GetService("StarterGui"):SetCore("SendNotification", {
+            Title = "Thông báo",
+            Text = "Đã sao chép link FaceBook!",
+            Duration = 3
+        })
+    end
+})
+MainTab:AddButton({
+    Title = "Maru Hub",
+    Description = "Key:✅",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/AnhDzaiScript/ScriptMaru/refs/heads/main/MaruHubPremium.Lua"))()
+    end
+})
+MainTab:AddButton({
+    Title = "Redz Hub",
+    Description = "",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/realredz/BloxFruits/refs/heads/main/Source.lua"))(Settings)
+    end
+})
+MainTab:AddButton({
+    Title = "W-azure",
+    Description = "",
+    Callback = function()
+        loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/3b2169cf53bc6104dabe8e19562e5cc2.lua"))()
+    end
+})
+MainTab:AddButton({
+    Title = "Xero Hub",
+    Description = "",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Xero2409/XeroHub/refs/heads/main/main.lua"))()
+    end
+})
+MainTab:AddButton({
+    Title = "Bắp Red Hub",
+    Description = "",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/LuaCrack/BapRed/main/BapRedHub"))()
+    end
+})
+MainTab:AddButton({
+    Title = "Trẩu Roblox",
+    Description = "",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/LuaCrack/TrauHub/refs/heads/main/TrauV1"))()
+    end
+})
+MainTab:AddButton({
+    Title = "Zis Roblox",
+    Description = "",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/giaotrinhhoc/ZisRb/refs/heads/main/ZisRbV5"))()
+    end
+})
+MainTab:AddButton({
+    Title = "Quantum",
+    Description = "",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Trustmenotcondom/QTONYX/refs/heads/main/QuantumOnyx.lua"))()
+    end
+})
+MainTab:AddButton({
+    Title = "Cokka Hub",
+    Description = "",
+    Callback = function()
+        loadstring(game:HttpGet"https://raw.githubusercontent.com/UserDevEthical/Loadstring/main/CokkaHub.lua")()
+    end
+})
+MainTab:AddButton({
+    Title = "Rubu Hub",
+    Description = "",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Bubu2k/Rubutv/refs/heads/main/RubuHubV3.txt"))()
+    end
+})
+MainTab:AddButton({
+    Title = "Min Gaming",
+    Description = "Vietsub",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/LuaCrack/Min/refs/heads/main/MinAV"))()
+    end
+})
+MainTab:AddButton({
+    Title = "Teddy Hub",
+    Description = "Auto Hop Sever Boss",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/skibiditoiletgojo/Haidepzai/refs/heads/main/Teddy-Premium"))()
+    end
+})
+FruitTab:AddButton({
+    Title = "Panda Hub",
+    Description = "Auto Nhặt Fruit",
+    Callback = function()
+        SpeedTween = 350
+getgenv().RandomFruit = true
+getgenv().EspFruit = true
+getgenv().Team = "Pirate"
+getgenv().WebhookUrl = ''
+loadstring(game:HttpGet('https://raw.githubusercontent.com/VNT-UNIVERSAL/Panda-Hub/main/Release/fruitfarm.lua'))()
+    end
+})
+PlayerTab:AddButton({
+    Title = "Sera Hub",
+    Description = "Auto Bounty",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/LumosSera/SeraHub/main/AutoBounty.lua"))()
+    end
+})
+MainTab:AddButton({
+    Title = "Speed Hub",
+    Description = "",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/AhmadV99/Speed-Hub-X/main/Speed%20Hub%20X.lua"))()
+    end
+})
+MainTab:AddButton({
+    Title = "Attack Hub",
+    Description = "",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/KOBENFF/sdfd/refs/heads/main/Koatta.txt"))()
+    end
+})
+MainTab:AddButton({
+    Title = "Astral Hub",
+    Description = "",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Overgustx2/Main/refs/heads/main/BloxFruits_25.html"))()
+    end
+})
+MainTab:AddButton({
+    Title = "HoHo Hub",
+    Description = "Có Get Key",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/acsu123/HOHO_H/main/Loading_UI"))()
+    end
+})
+MainTab:AddButton({
+    Title = "Zenith Hub",
+    Description = "",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Efe0626/RaitoHub/main/Script"))()
+    end
+})
+OtherTab:AddButton({
+    Title = "Cuttay Hub",
+    Description = "Auto Mirage Free",
+    Callback = function()
+        loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/a1498369f289af2671cca90085f23fb8.lua"))()
+    end
+})
+PlayerTab:AddButton({
+    Title = "Xero Bounty Hub",
+    Description = "Auto Bounty Vip",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/pisovn/OisiRoblox1/refs/heads/main/AutoBountyXero"))()
+    end
+})
+IslandTab:AddButton({
+    Title = "Fix Lag Premium",
+    Description = "",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/TurboLite/Script/main/FixLag.lua"))()
+    end
+})
+PlayerTab:AddButton({
+    Title = "Auto Bounty Dracov3 HoHo",
+    Description = "Cần Get Key",
+    Callback = function()
+        _G["Tuấn Anh IOS AuTo Bounty"] = {
+    ["Avatar"] = "rbxassetid://112455697889846",
+    ["Select Team"] = "Pirate", -- Pirate/Marine
+    ["Discord Webhook"] = "",
+    ["Bypass Teleport"] = false,
+    ["Max Level Distance"] = 612, -- 612 is took from wiki but u can change it
+    ["Don't attack friends"] = true,
+    ["Don't attack player have cup"] = false,
+    ["Chat After Kill"] = {
+        ["Active"] = false,
+        ["List Chat"] = {"i have a good gaming chair","No skill? Use Hoho hub","How to play this game","im new","your bad"},
+    },
+    ["Yourself"] = {
+        ["Invisible From Ken"] = true,
+        ["No Stun"] = true,
+    },
+    ["Time Control"] = {
+        ["Max Time Target Player"] = 120,
+    },
+}
+_G.SupperFixLag = true
+_G["Auto Collect/Buy/Store Fruit, Inorge Fruit You Already Have"] = false
+loadstring(game:HttpGet("https://raw.githubusercontent.com/acsu123/HOHO_H/main/Loading_UI"))()
+    end
+})
+PremiumTab:AddButton({
+    Title = "Maru Hub",
+    Description = "Key:✅",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/AnhDzaiScript/AutoKick/refs/heads/main/TrollHaHa"))()
+    end
+})
+PremiumTab:AddButton({
+    Title = "Banana Hub",
+    Description = "Key:✅",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/AnhDzaiScript/ScriptMaru/refs/heads/main/MaruHubPremium.Lua"))()
+    end
+})
+KaitanTab:AddButton({
+    Title = "Kaitan Premium",
+    Description = "Tự Động Lấy Full Item",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/simple-hubs/contents/refs/heads/main/bloxfruit-kaitan-main.lua"))()
+    end
+})
+MainTab:AddButton({
+    Title = "Tuấn Anh IOS",
+    Description = "Script Của Chủ Script",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/AnhDzaiScript/ScriptAnhTuanIOS/refs/heads/main/ScriptTuanAnhIOS.lua"))()
+    end
+})
+PlayerTab:AddSlider("Nhặt Rương", {
+    Title = "",
+    Min = 16,
+    Max = 500,
+    Default = 16,
+    Callback = function(value)
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/tuuvwaa/test016/refs/heads/main/an"))()
+    end
+})
+
+-- Find Fruit
+local fruitsESP = {}
+local findFruitEnabled = false
+local function createESP(fruit)
+    if not fruit:FindFirstChild("Handle") then return end
+
+    if fruitsESP[fruit] then
+        fruitsESP[fruit]:Destroy()
+        fruitsESP[fruit] = nil
+    end
+
+    local billboard = Instance.new("BillboardGui")
+    billboard.Adornee = fruit.Handle
+    billboard.Size = UDim2.new(0, 200, 0, 50)
+    billboard.StudsOffset = Vector3.new(0, 2, 0)
+    billboard.AlwaysOnTop = true
+
+    local label = Instance.new("TextLabel", billboard)
+    label.Size = UDim2.new(1, 0, 1, 0)
+    label.BackgroundTransparency = 1
+    label.Text = fruit.Name
+    label.TextColor3 = Color3.fromRGB(255, 255, 0)
+    label.TextScaled = true
+
+    billboard.Parent = fruit
+    fruitsESP[fruit] = billboard
+end
+
+local function findFruits()
+    local fruits = {}
+    for _, object in pairs(workspace:GetChildren()) do
+        if object:IsA("Tool") and object.Name:lower():find("fruit") then
+            table.insert(fruits, object)
+            if findFruitEnabled then
+                createESP(object)
+            end
+        end
+    end
+    return fruits
+end
+
+local function teleportToFruit(fruit)
+    if fruit and fruit:FindFirstChild("Handle") then
+        if findFruitEnabled then
+            LocalPlayer.Character.HumanoidRootPart.CFrame = fruit.Handle.CFrame
+        end
+    end
+end
+
+local runService = game:GetService("RunService")
+runService.Heartbeat:Connect(function()
+    local fruits = findFruits()
+    if #fruits > 0 then
+        for _, fruit in pairs(fruits) do
+            if fruit.Parent == workspace then
+                teleportToFruit(fruit)
+                wait(1)
+            end
+        end
+    end
+end)
+
+workspace.ChildAdded:Connect(function(child)
+    if child:IsA("Tool") and child.Name:lower():find("fruit") then
+        wait(0.5)
+        if findFruitEnabled then
+            createESP(child)
+        end
+        teleportToFruit(child)
+    end
+end)
+
+workspace.ChildRemoved:Connect(function(child)
+    if fruitsESP[child] then
+        fruitsESP[child]:Destroy()
+        fruitsESP[child] = nil
+    end
+end)
+
+-- Tab Fruit
+FruitTab:AddToggle("Find Fruit", {
+    Title = "Nhặt Fruit",
+    Description = "Nhặt Trái Trong Sever Nếu Có,ESP Fruit",
+    Callback = function(Value)
+        findFruitEnabled = Value
+        if not findFruitEnabled then
+            local fruits = findFruits()
+            for _, fruit in ipairs(fruits) do
+                if fruitsESP[fruit] then
+                    fruitsESP[fruit]:Destroy()
+                    fruitsESP[fruit] = nil
+                end
+            end
+        end
+    end
+})
+
+-- Auto Random Fruit Toggle
+FruitTab:AddToggle("Random Fruit", {
+    Title = "Random Trái",
+    Description = "Bật/Tắt mua trái ác quỷ ngẫu nhiên",
+    Callback = function(state)
+        _G.Random_Auto = state
+        if state then
+            task.spawn(function()
+                pcall(function()
+                    while _G.Random_Auto do
+                        wait(0.1)
+                        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("Cousin", "Buy") -- Mua random fruit
+                    end
+                end)
+            end)
+        else
+
+
+
+            _G.Random_Auto = false -- Ensure to set _G.Random_Auto to false when disabling
+        end
+    end
+})
+
+-- Hàm để đóng hoặc thu nhỏ cửa sổ (toggle)
+local minimized = false
+local function toggleMinimize()
+    minimized = not minimized
+    if minimized then
+        Window:SetSize(UDim2.fromOffset(160, 60)) -- Adjust for a smaller minimized size
+        Window:SetProperty("Acrylic", false)
+
+        -- Ẩn tất cả các tab
+        for _, tab in ipairs(Window:GetTabs()) do
+            tab:SetProperty("Visible", false)
+        end
+
+        Window.TitleBar:SetProperty("Visible", false)
+        Window.SubTitleLabel:SetProperty("Visible", false)
+
+    else
+        Window:SetSize(UDim2.fromOffset(580, 460)) -- Restore original size
+        Window:SetProperty("Acrylic", true)
+        for _, tab in ipairs(Window:GetTabs()) do
+            tab:SetProperty("Visible", true)
+        end
+
+        Window.TitleBar:SetProperty("Visible", true)
+        Window.SubTitleLabel:SetProperty("Visible", true)
+    end
+end
+Window.MinimizeKeybind = toggleMinimize
+while true do task.wait(0.00001) 
+print("Ey yo skider")
+end
